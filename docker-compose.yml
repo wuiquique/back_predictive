@@ -1,0 +1,6 @@
+services:
+  td-back:
+    build: .
+    expose:
+      - "8000"
+    image: back_predictive:latest

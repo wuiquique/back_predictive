@@ -6,13 +6,14 @@ import pandas as pd
 import joblib
 import shap
 
-model = joblib.load("../MSD_RFR_PredictiveModel.pkl")
-scaler = joblib.load("../MSD_RFR_Scaler.pkl")
+model = joblib.load("./MSD_RFR_PredictiveModel.pkl")
+scaler = joblib.load("./MSD_RFR_Scaler.pkl")
 
 app = FastAPI()
 
 origins = [
-    "*",
+    "http://localhost:5173",
+    "https://beatprophet.wuiquique.com"
 ]
 
 app.add_middleware(
