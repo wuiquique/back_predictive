@@ -4,3 +4,6 @@ services:
     expose:
       - "8000"
     image: back_predictive:latest
+    volumes:
+      - ../MSD_RFR_PredictiveModel.pkl:/app/MSD_RFR_PredictiveModel.pkl
+      - ../MSD_RFR_Scaler.pkl:/app/MSD_RFR_Scaler.pkl
