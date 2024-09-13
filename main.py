@@ -24,6 +24,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def decade_classify(year):
+    if year >= 1922 and year <= 1929:
+        return 1
+    elif year >= 1930 and year <= 1939:
+        return 2
+    elif year >= 1940 and year <= 1949:
+        return 3
+    elif year >= 1950 and year <= 1959:
+        return 4
+    elif year >= 1960 and year <= 1969:
+        return 5
+    elif year >= 1970 and year <= 1979:
+        return 6
+    elif year >= 1980 and year <= 1989:
+        return 7
+    elif year >= 1990 and year <= 1999:
+        return 8
+    elif year >= 2000 and year <= 2011:
+        return 9
+    else:
+        return -1
+
+def tempo_transform(tempo):
+    if tempo >= 200:
+        return tempo / 2
+    else:
+        return tempo
+
 class SongModel(BaseModel):
     year: int
     duration: float
@@ -39,8 +67,14 @@ async def root():
 
 @app.post("/predict")
 def predict(data: SongModel):
-    df = pd.DataFrame([data.dict()])
+    df = pd.DataFrame([data.model_dump()])
+    # df["year"] = decade_classify(df["year"])
+    df["year"] = df["year"].apply(decade_classify)
+    # df["tempo"] = tempo_transform(df["tempo"])
+    df["tempo"] = df["tempo"].apply(tempo_transform)
     df_scaled = scaler.transform(df)
+
+    print(df["year"])
 
     prediction = model.predict(df_scaled)
     explainer = shap.TreeExplainer(model)
