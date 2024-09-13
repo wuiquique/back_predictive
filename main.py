@@ -68,13 +68,9 @@ async def root():
 @app.post("/predict")
 def predict(data: SongModel):
     df = pd.DataFrame([data.model_dump()])
-    # df["year"] = decade_classify(df["year"])
     df["year"] = df["year"].apply(decade_classify)
-    # df["tempo"] = tempo_transform(df["tempo"])
     df["tempo"] = df["tempo"].apply(tempo_transform)
     df_scaled = scaler.transform(df)
-
-    print(df["year"])
 
     prediction = model.predict(df_scaled)
     explainer = shap.TreeExplainer(model)
